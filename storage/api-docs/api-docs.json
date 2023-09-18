@@ -1,0 +1,600 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API CORE - COMPANY",
+        "description": "Api de acesso ao sistema CORE - COMPANY",
+        "contact": {
+            "email": "billyfranklim@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://api.core.local:9192",
+            "description": "Ambiente de desenvolvimento local"
+        },
+        {
+            "url": "https://auth.billy.dev.br",
+            "description": "Ambiente de desenvolvimento online"
+        }
+    ],
+    "paths": {
+        "/app": {},
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Login de usuário com username e senha.",
+                "operationId": "postLogin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "system"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "E-mail do usuário.",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "example@mail.com"
+                                    },
+                                    "password": {
+                                        "description": "Senha do usuário.",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "123456"
+                                    },
+                                    "system": {
+                                        "description": "Tipo de sistema que o usuário está acessando.",
+                                        "type": "number",
+                                        "format": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna os dados do token do usuário autenticado."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "description": "Logout de usuário com o token de autorização.",
+                "operationId": "getLogout",
+                "responses": {
+                    "200": {
+                        "description": "Deslogado com sucesso."
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/system": {
+            "post": {
+                "tags": [
+                    "System"
+                ],
+                "description": "Creation of the system.",
+                "operationId": "createSystem",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "schema": "System Create",
+                                "title": "System Create",
+                                "required": [
+                                    "description"
+                                ],
+                                "properties": {
+                                    "description": {
+                                        "description": "System description.",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "API CORE"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "System creation succefull."
+                    },
+                    "401": {
+                        "description": "Invalid Token."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/unit-type": {
+            "get": {
+                "tags": [
+                    "UnitType"
+                ],
+                "description": "Obter lista de tipos de unidade.",
+                "operationId": "getUnitTypes",
+                "responses": {
+                    "200": {
+                        "description": "Lista de tipos de unidade obtida com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "ID do tipo de unidade.",
+                                                        "type": "integer",
+                                                        "format": "int64"
+                                                    },
+                                                    "description": {
+                                                        "description": "Descrição do tipo de unidade.",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "description": "Metadados adicionais.",
+                                            "type": "object"
+                                        },
+                                        "link": {
+                                            "description": "Links adicionais.",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "UnitType"
+                ],
+                "description": "Criação de Tipo de Unidade .",
+                "operationId": "createUnitType",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "schema": "UnitType Create",
+                                "title": "UnitType Create",
+                                "required": [
+                                    "description"
+                                ],
+                                "properties": {
+                                    "description": {
+                                        "description": "Descrição do tipo de unidade.",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "UnitTypeoprofilaxia"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Criação realizada com sucesso."
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/unit-type/{id}": {
+            "get": {
+                "tags": [
+                    "UnitType"
+                ],
+                "description": "Obter informações de um tipo de unidade específico.",
+                "operationId": "getUnitType",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do tipo de unidade",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Informações do tipo de unidade obtidas com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID do tipo de unidade.",
+                                                    "type": "integer",
+                                                    "format": "int64"
+                                                },
+                                                "description": {
+                                                    "description": "Descrição do tipo de unidade.",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "UnitType"
+                ],
+                "description": "Atualizar informações de um tipo de unidade específico.",
+                "operationId": "updateUnitType",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do tipo de unidade",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "schema": "UnitType Update",
+                                "title": "UnitType Update",
+                                "properties": {
+                                    "description": {
+                                        "description": "Nova descrição do tipo de unidade.",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "UnitTypeoprofilaxia"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Atualização realizada com sucesso."
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "UnitType"
+                ],
+                "description": "Excluir um tipo de unidade específico.",
+                "operationId": "deleteUnitType",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do tipo de unidade",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Anestesista excluído com sucesso."
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "404": {
+                        "description": "Anestesista não encontrado."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Criação de usuário.",
+                "operationId": "createUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password",
+                                    "system"
+                                ],
+                                "properties": {
+                                    "user": {
+                                        "type": "object",
+                                        "format": "object",
+                                        "oneOf": [
+                                            {
+                                                "schema": "User Create",
+                                                "title": "User Create",
+                                                "required": [
+                                                    "email"
+                                                ],
+                                                "properties": {
+                                                    "name": {
+                                                        "description": "Nome do usuário.",
+                                                        "type": "string",
+                                                        "format": "string",
+                                                        "example": "Teste da Silva"
+                                                    },
+                                                    "email": {
+                                                        "description": "E-mail do usuário.",
+                                                        "type": "string",
+                                                        "format": "string",
+                                                        "example": "example@mail.com"
+                                                    },
+                                                    "password": {
+                                                        "description": "Senha do usuário.",
+                                                        "type": "string",
+                                                        "format": "string",
+                                                        "example": "example@mail.com"
+                                                    },
+                                                    "password_confirmation": {
+                                                        "description": "Confirmação de Senha.",
+                                                        "type": "string",
+                                                        "format": "string",
+                                                        "example": "example@mail.com"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        ]
+                                    },
+                                    "permissions": {
+                                        "description": "Permissões do usuário",
+                                        "type": "array",
+                                        "format": "array",
+                                        "items": {},
+                                        "example": [
+                                            "Ler Emails",
+                                            "Criar Usuários"
+                                        ]
+                                    },
+                                    "roles": {
+                                        "description": "Funções do usuário",
+                                        "type": "array",
+                                        "format": "array",
+                                        "items": {},
+                                        "example": [
+                                            "Administrador",
+                                            "Coordenador"
+                                        ]
+                                    },
+                                    "systems": {
+                                        "description": "Systems ID",
+                                        "type": "array",
+                                        "format": "array",
+                                        "items": {},
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Criação realizada com sucesso."
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/me": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Retorna os dados do usuário logado.",
+                "operationId": "getUserMe",
+                "responses": {
+                    "200": {
+                        "description": "Usuário logado."
+                    },
+                    "401": {
+                        "description": "Token inválido."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Autenticação dos diversos tipos de usuários."
+        },
+        {
+            "name": "Auth",
+            "description": "Autenticação dos diversos tipos de usuários."
+        },
+        {
+            "name": "System",
+            "description": "System of the coorporation."
+        },
+        {
+            "name": "UnitType",
+            "description": "Tipos de Unidade do sistema."
+        },
+        {
+            "name": "UnitType",
+            "description": "Tipos de Unidade do sistema."
+        },
+        {
+            "name": "UnitType",
+            "description": "Tipos de Unidade do sistema."
+        },
+        {
+            "name": "UnitType",
+            "description": "Tipos de Unidade do sistema."
+        },
+        {
+            "name": "UnitType",
+            "description": "Tipos de Unidade do sistema."
+        },
+        {
+            "name": "User",
+            "description": "Usuários do sistema."
+        },
+        {
+            "name": "User",
+            "description": "Usuários do sistema."
+        }
+    ]
+}
